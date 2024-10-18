@@ -25,6 +25,9 @@
 #include "classes/Indicators/Special/indicators.h"
 #include "classes/Indicators/indicators.h"
 
+// EA classes.
+#include "classes-ea/PrometheusMetrics.h"
+
 // EA structs.
 #include "common/struct.h"
 
