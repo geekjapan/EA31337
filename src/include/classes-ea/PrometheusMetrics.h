@@ -83,19 +83,30 @@
  * terminal_memory_total
  * terminal_memory_used
  * @see: https://www.mql5.com/en/book/common/environment/env_resources
- * terminal_conneted
+ * terminal_connected
  * terminal_ping_last
  * @see: https://www.mql5.com/en/book/common/environment/env_connectivity
  */
 
 // Includes.
-#include "../classes/File.mqh"
+#include "PrometheusMetricsValue.h"
+#include "PrometheusSchema.h"
+#include "PrometheusSchemaField.h"
+#include "PrometheusSchemaGroup.h"
 
 /**
  * Class to export Prometheus Metrics from EA.
  */
-class PrometheusMetrics {
+class PrometheusMetrics : public Dynamic {
  protected:
+  /* Protected fields */
+
+  // Reference to Prometheus fields schema.
+  Ref<PrometheusSchema> schema;
+
+  // Map of added values. Key is a group name + field name. Keys must be unique.
+  DictStruct<string, PrometheusMetricsValue> values;
+
   /* Protected methods */
 
   /**
@@ -107,12 +118,157 @@ class PrometheusMetrics {
   /**
    * Class constructor.
    */
-  PrometheusMetrics() { Init(); }
+  PrometheusMetrics(PrometheusSchema* _schema = NULL) {
+    schema = _schema;
+    Init();
+  }
 
   /**
    * Class deconstructor.
    */
   ~PrometheusMetrics() {}
 
-  // @todo : Method to export metrics into the file using File class.
+  /* Public methods */
+
+  /**
+   * Prepares for a new set of values.
+   */
+  void Clear() { values.Clear(); }
+
+  /**
+   * Outputs values as Prometheus-compatible code.
+   */
+  string ToString() {
+    if (!schema.IsSet()) {
+      Alert("Schema was not set! Please use PrometheusMetrics::SetSchema().");
+      DebugBreak();
+      return "<missing schema>";
+    }
+
+    string _out;
+    // Iterating over schema groups, then fields.
+    for (DictStructIterator<string, Ref<PrometheusSchemaGroup>> iter = schema.Ptr().GetGroups().Begin(); iter.IsValid();
+         ++iter) {
+      PrometheusSchemaGroup* _group = iter.Value().Ptr();
+
+      if (iter.Index() != 0) {
+        // Group separator.
+        _out += "\n";
+      }
+
+      if (StringLen(_group.help) > 0) {
+        _out += "# HELP " + _group.name + " " + _group.help + "\n";
+      }
+
+      _out += "# TYPE " + _group.name + " " + _group.type + "\n";
+
+      // Iterating over group fields.
+      for (DictStructIterator<string, Ref<PrometheusSchemaField>> iter2 = _group.GetFields().Begin(); iter2.IsValid();
+           ++iter2) {
+        PrometheusSchemaField* _field = iter2.Value().Ptr();
+        PrometheusMetricsValue _value;
+        if (!TryGetValue(_group.name, _field.name, _value)) {
+          continue;
+        }
+
+        _out += "ea_" + _field.name;
+
+        if (_field.labels.Size() > 0) {
+          _out += "{";
+
+          for (DictStructIterator<int, string> iter3 = _field.labels.Begin(); iter3.IsValid(); ++iter3) {
+            if (iter3.Index() > 0) {
+              // Label separator.
+              _out += ", ";
+            }
+
+            _out += iter3.Value() + "=\"";
+
+            // Do field value have value for that label?
+            unsigned int _label_value_pos;
+            if (_value.labels.KeyExists(iter3.Value(), _label_value_pos)) {
+              string _label_value = _value.labels.GetByPos(_label_value_pos);
+              _out += _label_value;
+            }
+
+            _out += "\"";
+          }
+
+          _out += "}";
+        }
+
+        _out += " " + _value.ToString() + "\n";
+      }
+    }
+
+    return _out;
+  }
+
+  /**
+   * Tries to get value for the given field.
+   */
+  bool TryGetValue(string _group_name, string _field_name, PrometheusMetricsValue& out) {
+    unsigned int _value_pos;
+    if (values.KeyExists(_group_name + ":" + _field_name, _value_pos)) {
+      out = values.GetByPos(_value_pos);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Checks if we can set given field to given type of value.
+   */
+  ENUM_DATATYPE CheckSchemaFieldCompatibility(string _group_name, string _field_name, ENUM_DATATYPE _type) {
+    if (!schema.IsSet()) {
+      Alert("Schema was not set! Please use PrometheusMetrics::SetSchema().");
+      DebugBreak();
+      return (ENUM_DATATYPE)-1;
+    }
+
+    // @todo
+    return _type;
+  }
+
+  /**
+   * Returns given schema field.
+   */
+  PrometheusSchemaField* GetSchemaField(string _group_name, string _field_name) {
+    if (!schema.IsSet()) {
+      Alert("Schema was not set! Please use PrometheusMetrics::SetSchema().");
+      DebugBreak();
+      return NULL;
+    }
+
+    return schema.Ptr().GetField(_group_name, _field_name);
+  }
+
+  /**
+   * Sets value of the given field.
+   */
+  template <typename T>
+  void SetValue(string _group_name, string _field_name, T value) {
+    T _typed_value = T();
+    ENUM_DATATYPE _field_type = CheckSchemaFieldCompatibility(_group_name, _field_name, GetType(_typed_value));
+
+    PrometheusMetricsValue _value(_group_name, _field_name, _field_type);
+    _value.value.Set(value);
+
+    values.Set(_group_name + ":" + _field_name, _value);
+  }
+
+  /**
+   * Sets value of the given field with label values.
+   */
+  template <typename T>
+  void SetValue(string _group_name, string _field_name, T value, DictStruct<string, string>& labels) {
+    T _typed_value = T();
+    ENUM_DATATYPE _field_type = CheckSchemaFieldCompatibility(_group_name, _field_name, GetType(_typed_value));
+
+    PrometheusMetricsValue _value(_group_name, _field_name, _field_type);
+    _value.value.Set(value);
+    _value.labels = labels;
+
+    values.Set(_group_name + ":" + _field_name, _value);
+  }
 };
