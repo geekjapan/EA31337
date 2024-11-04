@@ -198,6 +198,41 @@ class TypedValue {
   /**
    * Sets value from given number.
    */
+  void Set(char _value) { Set(CharToString(_value)); }
+
+  /**
+   * Sets value from given number.
+   */
+  void Set(unsigned char _value) { Set((long)_value); }
+
+  /**
+   * Sets value from given number.
+   */
+  void Set(short _value) { Set((long)_value); }
+
+  /**
+   * Sets value from given number.
+   */
+  void Set(unsigned short _value) { Set((long)_value); }
+
+  /**
+   * Sets value from given number.
+   */
+  void Set(int _value) { Set((long)_value); }
+
+  /**
+   * Sets value from given number.
+   */
+  void Set(unsigned int _value) { Set((long)_value); }
+
+  /**
+   * Sets value from given number.
+   */
+  void Set(unsigned long _value) { Set((long)_value); }
+
+  /**
+   * Sets value from given number.
+   */
   void Set(long _value) {
     switch (type) {
       case TYPE_BOOL:
@@ -350,7 +385,7 @@ class TypedValue {
   string ToString() {
     switch (type) {
       case TYPE_BOOL:
-        return value.vbool ? "True" : "False";
+        return value.vbool ? "1" : "0";
       case TYPE_UCHAR:
       case TYPE_SHORT:
       case TYPE_USHORT:
@@ -366,7 +401,7 @@ class TypedValue {
       case TYPE_STRING:
         return vstring;
       case TYPE_DATETIME:
-        return TimeToString(vdatetime);
+        return IntegerToString((long)vdatetime);
       default:
         Alert("Unsupported type: ", EnumToString(type));
         DebugBreak();

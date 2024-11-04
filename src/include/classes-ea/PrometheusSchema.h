@@ -82,6 +82,23 @@ class PrometheusSchema : public Dynamic {
   }
 
   /**
+   * Adds label to the given field.
+   */
+  void AddLabel(string _group_name, string _field_name, string _label_name) {
+    // Searching for the field.
+    PrometheusSchemaField* _field = GetField(_group_name, _field_name);
+
+    if (_field == NULL) {
+      Alert("There is no field \"", _field_name, "\" in group \"", _group_name,
+            "\"! You need to add it before using AddLabel()!");
+      DebugBreak();
+      return;
+    }
+
+    _field.AddLabel(_label_name);
+  }
+
+  /**
    * Returns schema groups.
    */
   DictStruct<string, Ref<PrometheusSchemaGroup>>* GetGroups() { return &groups; }

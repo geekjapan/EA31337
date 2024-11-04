@@ -83,14 +83,12 @@
  * terminal_memory_total
  * terminal_memory_used
  * @see: https://www.mql5.com/en/book/common/environment/env_resources
- * terminal_conneted
+ * terminal_connected
  * terminal_ping_last
  * @see: https://www.mql5.com/en/book/common/environment/env_connectivity
  */
 
 // Includes.
-#include "../classes/File.mqh"
-#include "../classes/Std.h"
 #include "PrometheusMetricsValue.h"
 #include "PrometheusSchema.h"
 #include "PrometheusSchemaField.h"
@@ -159,7 +157,7 @@ class PrometheusMetrics : public Dynamic {
       }
 
       if (StringLen(_group.help) > 0) {
-        _out += "HELP " + _group.help + "\n";
+        _out += "# HELP " + _group.name + " " + _group.help + "\n";
       }
 
       _out += "# TYPE " + _group.name + " " + _group.type + "\n";
@@ -173,7 +171,33 @@ class PrometheusMetrics : public Dynamic {
           continue;
         }
 
-        _out += _field.name + " " + _value.ToString() + "\n";
+        _out += "ea_" + _field.name;
+
+        if (_field.labels.Size() > 0) {
+          _out += "{";
+
+          for (DictStructIterator<int, string> iter3 = _field.labels.Begin(); iter3.IsValid(); ++iter3) {
+            if (iter3.Index() > 0) {
+              // Label separator.
+              _out += ", ";
+            }
+
+            _out += iter3.Value() + "=\"";
+
+            // Do field value have value for that label?
+            unsigned int _label_value_pos;
+            if (_value.labels.KeyExists(iter3.Value(), _label_value_pos)) {
+              string _label_value = _value.labels.GetByPos(_label_value_pos);
+              _out += _label_value;
+            }
+
+            _out += "\"";
+          }
+
+          _out += "}";
+        }
+
+        _out += " " + _value.ToString() + "\n";
       }
     }
 
@@ -229,6 +253,21 @@ class PrometheusMetrics : public Dynamic {
 
     PrometheusMetricsValue _value(_group_name, _field_name, _field_type);
     _value.value.Set(value);
+
+    values.Set(_group_name + ":" + _field_name, _value);
+  }
+
+  /**
+   * Sets value of the given field with label values.
+   */
+  template <typename T>
+  void SetValue(string _group_name, string _field_name, T value, DictStruct<string, string>& labels) {
+    T _typed_value = T();
+    ENUM_DATATYPE _field_type = CheckSchemaFieldCompatibility(_group_name, _field_name, GetType(_typed_value));
+
+    PrometheusMetricsValue _value(_group_name, _field_name, _field_type);
+    _value.value.Set(value);
+    _value.labels = labels;
 
     values.Set(_group_name + ":" + _field_name, _value);
   }

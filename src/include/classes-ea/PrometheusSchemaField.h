@@ -41,6 +41,9 @@ class PrometheusSchemaField : public Dynamic {
   // Description of the field.
   string help;
 
+  // List of labels.
+  DictStruct<int, string> labels;
+
   /**
    * Constructor.
    */
@@ -48,5 +51,20 @@ class PrometheusSchemaField : public Dynamic {
     name = _name;
     type = _type;
     help = _help;
+  }
+
+  /* Public methods */
+
+  /**
+   * Adds label to this field.
+   */
+  void AddLabel(string _label_name) {
+    if (labels.IndexOf(_label_name) != -1) {
+      Alert("Label \"", _label_name, "\" already added to the field \"", name, "\"!");
+      DebugBreak();
+      return;
+    }
+
+    labels.Push(_label_name);
   }
 };

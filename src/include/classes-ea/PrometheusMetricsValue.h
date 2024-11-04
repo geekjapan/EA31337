@@ -40,6 +40,9 @@ struct PrometheusMetricsValue {
   // Value for the field.
   TypedValue value;
 
+  // Field label's values.
+  DictStruct<string, string> labels;
+
   /**
    * Default constructor.
    */
