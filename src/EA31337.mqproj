@@ -3280,6 +3280,36 @@
       "path":"strategies-meta\\Meta_Weekday\\Stg_Meta_Weekday.mqh",
       "compile":false,
       "relative_to_project":true
+    },
+    {
+      "path":"include\\classes-ea\\PrometheusMetrics.h",
+      "compile":false,
+      "relative_to_project":true
+    },
+    {
+      "path":"include\\classes-ea\\PrometheusMetricsValue.h",
+      "compile":false,
+      "relative_to_project":true
+    },
+    {
+      "path":"include\\classes-ea\\TypedValue.h",
+      "compile":false,
+      "relative_to_project":true
+    },
+    {
+      "path":"include\\classes-ea\\PrometheusSchema.h",
+      "compile":false,
+      "relative_to_project":true
+    },
+    {
+      "path":"include\\classes-ea\\PrometheusSchemaGroup.h",
+      "compile":false,
+      "relative_to_project":true
+    },
+    {
+      "path":"include\\classes-ea\\PrometheusSchemaField.h",
+      "compile":false,
+      "relative_to_project":true
     }
   ]
 }
