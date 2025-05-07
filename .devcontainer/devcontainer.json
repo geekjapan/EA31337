@@ -12,13 +12,14 @@
         "vscode": {
             "extensions": [
                 "DavidAnson.vscode-markdownlint",
-                "elagil.pre-commit-helper",
-                "formulahendry.code-runner-copilot",
-                "formulahendry.code-runner",
-                "GitHub.copilot-chat",
                 "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "elagil.pre-commit-helper",
+                "formulahendry.code-runner",
+                "formulahendry.code-runner-copilot",
                 "github.vscode-github-actions",
                 "ms-python.python",
+                "ms-vscode.cpptools-extension-pack",
                 "vscodevim.vim"
             ]
         }
