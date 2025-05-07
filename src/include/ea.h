@@ -296,7 +296,10 @@ class EA31337 : public EA {
 
     if ((estate.Get<uint>(STRUCT_ENUM(EAState, EA_STATE_PROP_NEW_PERIODS)) & DATETIME_MINUTE) != 0) {
       // New minute started.
-      WriteMetrics();
+      if (EA_Export_Mode == EA_EXPORT_MODE_PROMETHEUS) {
+        // Export metrics to Prometheus.
+        WriteMetrics();
+      }
     }
   }
 

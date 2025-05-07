@@ -41,6 +41,12 @@ enum ENUM_EA_ADV_COND {
   EA_ADV_COND_TRADE_IS_PIVOT,  // Profitable side is at pivot
 };
 
+// Defines enum with supported export mode list.
+enum ENUM_EA_EXPORT_MODE {
+  EA_EXPORT_MODE_NONE = 0,    // (None)
+  EA_EXPORT_MODE_PROMETHEUS,  // Prometheus metrics
+};
+
 // Defines enum with supported strategy list.
 enum ENUM_STRATEGY {
   STRAT_NONE = 0,   // (None)
