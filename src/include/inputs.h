@@ -26,18 +26,18 @@
 input string __EA_Params__ =
     ">> " + ea_name + " v" + ea_version + " build " + (string)(int)__DATETIME__ + " <<";  // >>> EA31337 <<<
 #ifdef __elite__
-#include "common/elite/inputs.mqh"
+  #include "common/elite/inputs.mqh"
 #endif
 #ifdef __advanced__
-#ifdef __rider__
-#include "common/rider/inputs.mqh"
+  #ifdef __rider__
+    #include "common/rider/inputs.mqh"
+  #else
+    #include "common/advanced/inputs.mqh"
+  #endif
 #else
-#include "common/advanced/inputs.mqh"
-#endif
-#else
-#ifndef __elite__
-#include "common/lite/inputs.mqh"
-#endif
+  #ifndef __elite__
+    #include "common/lite/inputs.mqh"
+  #endif
 #endif
 
 #ifdef __MQL4__
@@ -61,6 +61,6 @@ input string __Logging_Params__ = "-- EA's logging & messaging --";  // >>> EA's
 #else
 input group "EA's logging & messaging"
 #endif
-input ENUM_LOG_LEVEL VerboseLevel = ea_log_level;  // Level of log verbosity
-input bool EA_DisplayDetailsOnChart = true;        // Display EA details on chart
+input ENUM_LOG_LEVEL VerboseLevel = ea_log_level;             // Level of log verbosity
+input bool EA_DisplayDetailsOnChart = true;                   // Display EA details on chart
 // input bool WriteSummaryReport = true;                                           // Write summary report on finish
