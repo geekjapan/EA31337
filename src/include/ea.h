@@ -337,7 +337,9 @@ class EA31337 : public EA {
     // metrics.Ptr().SetValue("order", "order1_stop_loss", TYPE_DOUBLE);
 
     // TRADE.
+    // Strategies.
 
+    /* @todo
     Strategy *_strat = _siter.Value().Ptr();
     string _strat_name;
     string _strat_tf;
@@ -368,6 +370,7 @@ class EA31337 : public EA {
       metrics.Ptr().SetValue("strategy", "id", _strat.sparams.Get<long>(STRAT_PARAM_ID), _labels_strat_tf);
       metrics.Ptr().SetValue("strategy", "lot_size", _strat.sparams.Get<float>(STRAT_PARAM_LS), _labels_strat_tf);
     }
+    */
 
     // SYMBOL.
     string _symbol = _Symbol;
