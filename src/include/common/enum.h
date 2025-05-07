@@ -112,26 +112,26 @@ enum ENUM_STRATEGY {
   STRAT_SVE_BB,      // SVE Bollinger Bands
   STRAT_TMAT_SVEBB,  // TMAT SVEBB
   // STRAT_TMA_CG,        // TMA CG
-  STRAT_TMA_TRUE,  // TMA True
-  STRAT_WPR,       // WPR
-  STRAT_ZIGZAG,    // ZigZag
-  STRAT_META_BEARS_BULLS,        // (Meta) Bears & Bulls
-  STRAT_META_DOUBLE,             // (Meta) Double
-  STRAT_META_CONDITIONS,         // (Meta) Conditions
-  STRAT_META_ENHANCE,            // (Meta) Enhance
-  STRAT_META_EQUITY,             // (Meta) Equity
-  STRAT_META_FORMATION,          // (Meta) Formation
-  STRAT_META_INTERVAL,           // (Meta) Interval
-  STRAT_META_HEDGE,              // (Meta) Hedge
-  STRAT_META_LIMIT,              // (Meta) Limit
-  STRAT_META_MA_CROSS,           // (Meta) MA Cross
-  STRAT_META_MARGIN,             // (Meta) Margin
-  STRAT_META_MARTINGALE,         // (Meta) Martingale
-  STRAT_META_MIRROR,             // (Meta) Mirror
-  STRAT_META_MULTI,              // (Meta) Multi
-  STRAT_META_MULTI_CURRENCY,     // (Meta) Multi Currency
+  STRAT_TMA_TRUE,             // TMA True
+  STRAT_WPR,                  // WPR
+  STRAT_ZIGZAG,               // ZigZag
+  STRAT_META_BEARS_BULLS,     // (Meta) Bears & Bulls
+  STRAT_META_DOUBLE,          // (Meta) Double
+  STRAT_META_CONDITIONS,      // (Meta) Conditions
+  STRAT_META_ENHANCE,         // (Meta) Enhance
+  STRAT_META_EQUITY,          // (Meta) Equity
+  STRAT_META_FORMATION,       // (Meta) Formation
+  STRAT_META_INTERVAL,        // (Meta) Interval
+  STRAT_META_HEDGE,           // (Meta) Hedge
+  STRAT_META_LIMIT,           // (Meta) Limit
+  STRAT_META_MA_CROSS,        // (Meta) MA Cross
+  STRAT_META_MARGIN,          // (Meta) Margin
+  STRAT_META_MARTINGALE,      // (Meta) Martingale
+  STRAT_META_MIRROR,          // (Meta) Mirror
+  STRAT_META_MULTI,           // (Meta) Multi
+  STRAT_META_MULTI_CURRENCY,  // (Meta) Multi Currency
 #ifdef __MQL5__
-  STRAT_META_NEWS,               // (Meta) News
+  STRAT_META_NEWS,  // (Meta) News
 #endif
   STRAT_META_ORDER_LIMIT,        // (Meta) Order Limit
   STRAT_META_OSCILLATOR_FILTER,  // (Meta) Oscillator Filter
@@ -152,12 +152,12 @@ enum ENUM_STRATEGY {
   STRAT_META_VOLATILITY,         // (Meta) Volatility
   STRAT_META_WEEKDAY,            // (Meta) Weekday
   // Recently added.
-  STRAT_META_DISCREPANCY,        // (Meta) Discrepancy
-  STRAT_META_SIGNAL_FILTER,      // (Meta) Signal Filter
-  STRAT_META_SAR,                // (Meta) SAR
+  STRAT_META_DISCREPANCY,    // (Meta) Discrepancy
+  STRAT_META_SIGNAL_FILTER,  // (Meta) Signal Filter
+  STRAT_META_SAR,            // (Meta) SAR
 };
 #define ENUM_STRATEGY_DEFINED
 enum ENUM_STRATEGY_META {
-  STRAT_META_NONE = 0,   // (None)
+  STRAT_META_NONE = 0,  // (None)
 };
 #define ENUM_STRATEGY_META_DEFINED
