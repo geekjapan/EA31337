@@ -26,18 +26,18 @@
 input string __EA_Params__ =
     ">> " + ea_name + " v" + ea_version + " build " + (string)(int)__DATETIME__ + " <<";  // >>> EA31337 <<<
 #ifdef __elite__
-  #include "common/elite/inputs.mqh"
+#include "common/elite/inputs.mqh"
 #endif
 #ifdef __advanced__
-  #ifdef __rider__
-    #include "common/rider/inputs.mqh"
-  #else
-    #include "common/advanced/inputs.mqh"
-  #endif
+#ifdef __rider__
+#include "common/rider/inputs.mqh"
 #else
-  #ifndef __elite__
-    #include "common/lite/inputs.mqh"
-  #endif
+#include "common/advanced/inputs.mqh"
+#endif
+#else
+#ifndef __elite__
+#include "common/lite/inputs.mqh"
+#endif
 #endif
 
 #ifdef __MQL4__
